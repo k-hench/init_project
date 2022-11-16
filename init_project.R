@@ -4,7 +4,7 @@ try_create_dir <- \(dir){if(!dir.exists(dir)){dir.create(dir)}}
 init_project <- \(name,
                   path = "~/Desktop",
                   from_scratch = TRUE,
-                  template_dir = "~/work/software/R/init_project/",
+                  template_dir = "~/work/software/R/init_project/templates",
                   author = "XX_AUTHOR_XX",
                   init_git = FALSE){
   path_full <- file.path(path, name)
