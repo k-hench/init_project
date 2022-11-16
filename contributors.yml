@@ -1,0 +1,7 @@
+# project contributions for
+project_name: "XX_NAME_XX"
+contributors:
+  - "XX_AUTHOR_XX":
+    role: "creator / main author"
+    contributions_start:
+      - XX_DATE_XX: "initalization of the project"
