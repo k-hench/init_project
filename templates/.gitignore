@@ -8,15 +8,17 @@ data/metadata/*
 !data/metadata/*.yml
 
 # exclude quarto compilation side-products but track reports
-qmd/*
-!qmd/*.qmd
+code/qmd/*
+!code/qmd/*.qmd
 .quarto/
-styles*
-!styles.scss
+code/css/styles*
+!code/css/styles.scss
+!code/css/styles.css
 
 # exclude nextflow logs and cache
-nf/*/*
-!nf/*/*.nf
+code/nf/*/*
+!code/nf/*/*.nf
+!code/nf/*/run_nf.sh
 
 # exclude results by default
 results/*

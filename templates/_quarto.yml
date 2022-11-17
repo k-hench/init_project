@@ -10,14 +10,15 @@ book:
   date: "XX_DATE_XX"
   chapters:
     - index.qmd
-    - qmd/references.qmd
+    - code/qmd/references.qmd
+    - code/qmd/session_info.qmd
   navbar:
     search: true
     right:
       - icon: github
         href: https://github.com/
   favicon: img/dummy.svg
-bibliography: references.bib
+bibliography: code/qmd/references.bib
 
 from: markdown+emoji
 
@@ -25,7 +26,7 @@ format:
   html:
     theme:
     - simplex
-    - styles.scss
+    - code/css/styles.scss
     code-fold: true
     code-summary: "toggle code"
     mainfont: "'TeX Gyre Pagella', 'Crimson Text', 'Noto Serif', serif"

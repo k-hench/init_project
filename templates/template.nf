@@ -3,7 +3,7 @@
 // ---
 //
 // <!--- note that this nextflow script is converted into a quarto file
-//   by running `bash sh/convert_nf_to_qmd.sh nf/00_template/template.nf`
+//   by running `bash code/sh/convert_nf_to_qmd.sh code/nf/00_template/template.nf`
 //   from the `${params.base}` of the project --->
 //
 // # nf: Indexing the Reference Genomes
@@ -22,11 +22,11 @@
 // [execution section](#workflow-composition).
 //
 // As a shorthand to start the workflow, the run command is bundled in the
-// accompanying `bash` sript `run_genotyping.sh`, so the workflow can be
-// started by run_genotyping
+// accompanying `bash` sript `run_nf.sh`, so the workflow can be
+// started by runing:
 //
 // ```sh
-// cd ${params.base}/nf/00_template
+// cd ${params.base}/code/nf/00_template
 // bash run_nf.sh
 // ```
 //
@@ -38,7 +38,7 @@
 // the difference between the variables `${baseDir}` and `${params.base}`:
 //
 // - `${params.base}` points to the root of the project folder (which is idendical with the base of this `git` repository)
-// - `${baseDir}` points to the path of the executed `nextflow` pipeline (typically `${params.base}/nf/<some_dir>`)
+// - `${baseDir}` points to the path of the executed `nextflow` pipeline (typically `${params.base}/code/nf/<some_dir>`)
 // :::
 //
 // ## Config Section
@@ -49,7 +49,7 @@
 //
 // ```groovy
 // // ----- Config section -----
-params.base = "${baseDir}/../.."
+params.base = "${baseDir}/../../.."
 params.outdir = "${params.base}/results"
 // // color logging
 ( c0, c1, c2 ) = [ "\033[0m", "\033[0;32m", "\033[1;30m" ]

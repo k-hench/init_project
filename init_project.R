@@ -19,23 +19,26 @@ init_project <- \(name,
     usethis::create_project(path_full, open = FALSE)
   }
   
-  path_nf <- file.path(path_full, "nf")
-  path_nf_c1 <- file.path(path_full, "nf", "00_template")
-  path_qmd <- file.path(path_full, "qmd")
+  path_code <- file.path(path_full, "code")
+  path_nf <- file.path(path_code, "nf")
+  path_nf_c1 <- file.path(path_code, "nf", "00_template")
+  path_qmd <- file.path(path_code, "qmd")
   path_docs <- file.path(path_full, "docs")
   path_data <- file.path(path_full, "data")
   path_results <- file.path(path_full, "results")
-  path_sh <- file.path(path_full, "sh")
+  path_sh <- file.path(path_code, "sh")
+  path_css <- file.path(path_code, "css")
   path_metadata <- file.path(path_full, "data", "metadata")
   path_img <- file.path(path_full, "img")
   
-  list(path_nf,
+  list(path_code,
+       path_nf,
        path_nf_c1,
        path_qmd,
        path_docs, path_img,
        path_data,path_results,
        path_metadata,
-       path_sh) |>
+       path_sh, path_css) |>
     walk(try_create_dir)
   
   readr::read_lines(file.path(template_dir, "contributors.yml")) |>
@@ -44,15 +47,18 @@ init_project <- \(name,
     stringr::str_replace("XX_DATE_XX", as.character(Sys.Date())) |> 
     readr::write_lines(file = file.path(path_metadata, "contributors.yml"))
   
-  svg(filename = file.path(path_full, "img", "dummy.svg"),
+  svg(filename = file.path(path_full, "img", "logo.svg"),
       width = 240/300,
       height = 275/300,
       bg = 'transparent'); grid::grid.circle();dev.off()
   
+  file.copy(file.path(path_img, "logo.svg"),
+            file.path(path_docs, "logo.svg"))
+  
   if(!file.exists(file.path(path_full, "README.md"))){
     readr::write_lines(x = c(paste0('# ', name,
-                                  ' <img src="img/dummy.svg" align="right" alt="" width="120" />'),
-                             "","**Author:** "),
+                                  ' <img src="img/logo.svg" align="right" alt="" width="120" />'),
+                             "", paste0("**Author:** ", author)),
                        file = file.path(path_full, "README.md"))
   }
   
@@ -62,26 +68,29 @@ init_project <- \(name,
     stringr::str_replace("XX_DATE_XX", as.character(Sys.Date())) |> 
     readr::write_lines(file = file.path(path_full, "_quarto.yml"))
   
-  readr::write_lines(x = c('<img src="img/dummy" align="right" alt="" width="160" />',
+  readr::write_lines(x = c('<img src="logo.svg" align="right" alt="" width="160" />',
                            '',
                            "# Index {.unnumbered}"),
                      file = file.path(path_full, "index.qmd"))
   
-  readr::write_lines(x = "", file = file.path(path_full, "references.bib"))
   file.copy(file.path(template_dir, "references.qmd"),
-            file.path(path_full, "qmd", "references.qmd"))
+            file.path(path_code, "qmd", "references.qmd"))
+  file.copy(file.path(template_dir, "session_info.qmd"),
+            file.path(path_code, "qmd", "session_info.qmd"))
   
+  file.copy(file.path(template_dir, "references.bib"),
+            file.path(path_code, "qmd", "references.bib"))
  
-  
   file.copy(file.path(template_dir, "styles.scss"),
-            file.path(path_full, "styles.scss"),
+            file.path(path_css, "styles.scss"),
             overwrite = TRUE)
+  
   if(Sys.which("sass") != ""){
     system(paste0("cd ", path_full, 
-                  " && sass ", file.path(path_full, "styles.scss"),
-                  " ", file.path(path_full, "styles.css"),
+                  " && sass ", file.path(path_css, "styles.scss"),
+                  " ", file.path(path_css, "styles.css"),
                   " && cd -"))
-    file.remove(file.path(path_full, "styles.css.map"))
+    file.remove(file.path(path_css, "styles.css.map"))
   }
   
   file.copy(file.path(template_dir, "convert_nf_to_qmd.sh"),
@@ -98,6 +107,9 @@ init_project <- \(name,
     readr::write_lines(file = file.path(path_nf_c1, "template.nf"))
   readr::write_lines(x = "nextflow run template.nf -c ../nf_cebitec.conf -resume", 
                      file = file.path(path_nf_c1, "run_nf.sh"))
+  
+  
+  if(dir.exists( file.path(path_full, "R"))){ ff::file.move(from = file.path(path_full, "R"), file.path(path_code, "R")) }
   
   if(init_git){
     if(Sys.which("git") != ""){
