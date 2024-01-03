@@ -1,0 +1,6 @@
+# General setup
+refName: mirang
+
+# local paths to stored sif container files for offline usage:
+# apptainer pull docker://khench/popgen_suite:v0.2
+sif_popgen: '$CDATA/apptainer_local/popgen_suite_v0.2.sif'

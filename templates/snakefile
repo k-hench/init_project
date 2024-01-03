@@ -1,0 +1,34 @@
+"""
+snakemake -n -R all
+"""
+import os
+from copy import deepcopy
+import numpy as np
+import pandas as pd
+
+configfile: "workflow/config.yml"
+
+code_dir = os.getcwd()
+base_dir = code_dir + "/.."
+
+rule all:
+    params:
+      wd = code_dir,
+      base_dir = base_dir
+    message:
+      '''
+      Ahoi there,
+      we are using `{params.wd}` as working directory,
+      while `{params.base_dir}` is the base directory
+      of this project.
+     
+      Overall project parameters can be edited within `config.yml`.
+      '''
+
+c_popgen = config[ 'sif_popgen' ]
+
+SPEC_REF = config[ 'refName' ]
+
+include: "./rules/template.smk"
+
+
